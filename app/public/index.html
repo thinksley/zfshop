@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="shopApp">
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+</head>
+<body>
+<nav class="navbar navbar-default nav-fixed-top" role="navigation" ng-controller="NavBarCtrl">
+	<div class="navbar-header">
+		<a href="#/home" class="navbar-brand">zf商城</a>
+	</div>
+	<ul class="nav navbar-nav">
+		<li><a href="#/home">首页</a></li>
+		<li><a href="#/users/login">登录</a></li>
+		<li><a href="#/users/reg">注册</a></li>
+	</ul>
+</nav>
+
+<div class="row" ng-view></div>
+
+
+</body>
+
+<script type="text/javascript" src="lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.js"></script>
+<script type="text/javascript" src="lib/angular/angular.js"></script>
+<script type="text/javascript" src="lib/angular-route/angular-route.js"></script>
+
+<script type="text/javascript">
+	var app =angular.module('shopApp',['ngRoute']);
+	app.config(function($routeProvider,$locationProvider){
+		$routeProvider.when('/',{
+			templateUrl:'pages/home.html',
+			controller:'HomeCtrl'
+		}).when('/home',{
+			templateUrl:'pages/home.html',
+			controller:'HomeCtrl'
+		}).when('/users/login',{
+			templateUrl:'pages/user/login.html',
+			controller:'LoginCtrl'
+		}).when('/users/reg',{
+			templateUrl:'pages/user/reg.html',
+			controller:'RegCtrl'
+		}).otherwise({
+			redirectTo:'/'
+		})
+	});
+
+	app.controller('HomeCtrl',function($scope){
+		$scope.title='zf商城么么哒';
+	})
+
+	app.controller('NavBarCtrl',function(){
+		
+	})
+
+	app.controller('LoginCtrl',function($scope){
+		$scope.title='登录';
+	})
+
+	app.controller('RegCtrl',function($scope,$http){
+		$scope.title='注册';
+		$scope.save=function(){
+			$http({
+				url:'/users/login',
+				method:'POST',
+				data:$scope.user
+			}).success(function(user){
+
+			}).error(function(data){
+
+			})
+		}
+	})
+</script>
+</html>
