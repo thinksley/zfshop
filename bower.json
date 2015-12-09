@@ -1,0 +1,28 @@
+{
+  "name": "zfshop",
+  "version": "0.0.0",
+  "authors": [
+    "李少祥 <939480781@qq.com>"
+  ],
+  "description": "node net shop",
+  "keywords": [
+    "node",
+    "net",
+    "shop"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8",
+    "angular-route": "~1.4.8",
+    "bootstrap": "~3.3.6"
+  }
+}

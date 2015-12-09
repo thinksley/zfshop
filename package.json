@@ -1,0 +1,17 @@
+{
+  "name": "zfshop",
+  "version": "1.0.0",
+  "description": "zf nodejs教学电商.",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "keywords": [
+    "zf"
+  ],
+  "author": "thinksley",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
