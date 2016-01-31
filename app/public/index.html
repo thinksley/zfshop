@@ -11,9 +11,21 @@
 		<a href="#/home" class="navbar-brand">zf商城</a>
 	</div>
 	<ul class="nav navbar-nav">
-		<li><a href="#/home">首页</a></li>
-		<li><a href="#/users/login">登录</a></li>
-		<li><a href="#/users/reg">注册</a></li>
+		<li ng-show="me" ng-class="{active:isActive('/home')}"><a href="#/home">首页</a></li>
+		<li ng-hide="me" ng-class="{active:isActive('/user/login')}"><a href="#/users/login">登录</a></li>
+		<li ng-hide="me" ng-class="{active:isActive('/user/reg')}"><a href="#/users/reg">注册</a></li>
+		<li ng-show="me" ng-class="{active:isActive('/wares/admin/list')}"><a href="#/wares/admin/list">商品管理</a></li>
+	</ul>
+
+	<ul class="nav-navbar-nav navbar-right" ng-show="me">
+		<li class="dropdown">
+			<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button">
+				<img style="width:15px;height:15px;" src="{{me.avatar}}" alt="{{me.username}}"/>{{me.username}} <span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu dropdown-menu-left">
+				<li><a href="#" ng-click="logout()">退出</a></li>
+			</ul>
+		</li>
 	</ul>
 </nav>
 
@@ -47,30 +59,75 @@
 		})
 	});
 
+	//是所模块加载完成之后的第一个方法
+	app.run(function($http,$location,$rootScope){
+
+		$http({
+			url:'/users/validate',
+			method:'POST'
+		}).success(function(user){
+			$rootScope.me = user;
+			$location.path('/home');
+		}).error(function(data){
+			$location.path('/users/login');
+		});
+
+	});
+
 	app.controller('HomeCtrl',function($scope){
 		$scope.title='zf商城么么哒';
 	})
 
-	app.controller('NavBarCtrl',function(){
-		
+	app.controller('NavBarCtrl',function($scope,$http,$rootScope,$location){
+		$scope.title = '导航';
+		$scope.isActive = function(path){
+			return path == $location.path();
+		}
+		$scope.logout = function(){
+			$http({
+				url:'/users/logout',
+				method:'POST'
+			}).success(function(user){
+				$rootScope.me = null;
+				$location.path('/users/login');
+			}).error(function(data){
+				$location.path('/users/login');
+			});
+		}
 	})
 
-	app.controller('LoginCtrl',function($scope){
+	app.controller('LoginCtrl',function($rootScope,$scope,$location,$http){
 		$scope.title='登录';
-	})
-
-	app.controller('RegCtrl',function($scope,$http){
-		$scope.title='注册';
-		$scope.save=function(){
+		$scope.save = function(){
 			$http({
 				url:'/users/login',
 				method:'POST',
 				data:$scope.user
 			}).success(function(user){
-
+				$rootScope.me = user;
+				console.log($rootScope.me);
+				$location.path('/home');
 			}).error(function(data){
+				//$location.path('/users/login');
+			});
+			return false;
+		}
+	})
 
+	app.controller('RegCtrl',function($scope,$http,$location){
+		$scope.title='注册';
+		$scope.save=function(){
+
+			$http({
+				url:'/users/reg',
+				method:'POST',
+				data:$scope.user
+			}).success(function(user){
+				$location.path('/users/login');
+			}).error(function(data){
+				$location.path('/users/reg');
 			})
+			//return false;
 		}
 	})
 </script>

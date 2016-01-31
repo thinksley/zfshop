@@ -1,13 +1,13 @@
 <div class="col-md-12">
 	<div class="panel panel-default">
 		<div class="panel-heading">注册</div>
-		<form action="" novalidate role="form" name="userform" class="form-horizontal" ng-sumbit="save()">
+		<form action="" method="post" novalidate role="form" name="userform" class="form-horizontal" >
 			<div class="panel-body">
 				
 				<div class="form-group row" ng-class="{'has-error':userform.username.$dirty && userform.username.$invalid}">
 					<label for="username" class="control-label col-sm-offset-2 col-sm-2 text-right">用户</label>
 					<div class="input-group col-sm-4">
-						<input class="form-control" type="text" id="username" name="username" ng-model="user.username" placeholder="请输入中文" ng-pattern="/[\u4e00-\u9fa5]/" ng-required / >
+						<input class="form-control" type="text" id="username" name="username" ng-model="user.username" placeholder="请输入"  ng-required / >
 					</div>
 					<div class="help-block col-sm-4" ng-show="userform.username.$dirty && userform.username.$invalid">
 						<span class="text-danger" ng-show="userform.username.$error.required">请输入</span>
@@ -39,7 +39,7 @@
 				
 				<div class="panel-footer clearfix">
 					<div class="col-sm-offset-5 col-sm-1">
-						<button type="submit" class="btn btn-lg btn-primary btn-enter">注册</button>
+						<button type="button" ng-click="save()" class="btn btn-lg btn-primary btn-enter">注册</button>
 					</div>
 				</div>
 
