@@ -1,2 +1,2 @@
 exports.User = require('./user');
-//exports.Ware = require('./ware');
+exports.Ware = require('./ware');

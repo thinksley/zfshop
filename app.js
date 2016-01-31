@@ -10,7 +10,7 @@ mongoose.connect('mongodb://127.0.0.1/zhufengshop');
 
 var bodyParser = require('body-parser');
 var users = require('./routes/users');
-
+var wares = require('./routes/wares');
 // 静态服务器中间件
 app.use(express.static(path.join(__dirname,'app','public')));
 app.use(bodyParser.json()); //解析json请求
@@ -29,5 +29,6 @@ app.use(session({
 }));
 
 app.use('/users',users);
+app.use('/wares',wares);
 
 app.listen(8080);
