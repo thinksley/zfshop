@@ -134,9 +134,23 @@
 		}
 	})
 
-	app.controller('WareCtrl',function($rootScope,$scope,$location,$http){
+	app.controller('WareCtrl',function($rootScope,$scope,$location,$http,fileReader){
 		$scope.ware = {}; //表单返回的数据
-		$scope.wares = [{name:'iphone'}]; //提供出去的数据
+		$scope.wares = []; //提供出去的数据
+
+		$http({
+			url:'/wares/list',
+			method:'GET'
+		}).success(function(wares){
+			$scope.wares =wares;
+		});
+
+		$scope.getFile = function(){
+			var s = fileReader.readAsDataUrl($scope.file,$scope);
+			s.then(function(result){
+				$scope.ware.imgSrc = result;
+			})
+		}
 
 		$scope.save=function(){
 			var fd = new FormData();
@@ -156,7 +170,9 @@
 					{
 						url:'/wares/add',
 						method:'POST',
-						data:$scope.ware
+						data:fd,
+						headers:{'Content-Type':undefined},
+						transformRequest:angular.identity
 					}
 			).success(function(ware){
 				$scope.wares.push(ware);
@@ -176,5 +192,52 @@
 			}
 		}
 	});
+
+	app.directive('fileModel',function(){
+		return {
+			link:function(scope,element,attrs,ngMode){
+				element.bind('change',function(event){
+					scope.file=element[0].files[0];
+					scope.getFile();
+				});
+			}
+		}
+	})
+
+	app.factory('fileReader',function($q){
+		//读取文件成功后触发
+		var onLoad = function(reader,deferred,scope){
+			return function(){
+				scope.$apply(function(){
+					deferred.resolve(reader.result);
+				});
+			}
+		}
+		//读取失败后触发
+		var onError = function(reader,deferred,scope){
+			return function(){
+				scope.$apply(function(){
+					deferred.reject(reader.result);
+				});
+			}
+		}
+		//获取文件读取器
+		var getReader = function(deferred,scope){
+			var reader = new FileReader();
+			reader.onload = onLoad(reader,deferred,scope);
+			reader.onerror = onError(reader,deferred,scope);
+			return reader;
+		}
+		//读取为dataurl
+		var readAsDataURL = function(file,scope){
+			var deferred = $q.defer();
+			var reader = getReader(deferred,scope);
+			reader.readAsDataURL(file);
+			return deferred.promise;
+		}
+		return {
+			readAsDataUrl:readAsDataURL
+		}
+	})
 </script>
 </html>
