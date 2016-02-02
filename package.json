@@ -8,8 +8,9 @@
     "test": "gulp test"
   },
   "keywords": [
-    "zf"
+    ""
   ],
+
   "author": "thinksley",
   "license": "MIT",
   "dependencies": {
@@ -23,7 +24,5 @@
     "mongoose": "^4.2.10",
     "multer": "^1.1.0",
     "uuid": "^2.0.1"
-
-    
   }
 }
