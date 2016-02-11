@@ -57,6 +57,9 @@
 		}).when('/ware/admin/list',{
 			templateUrl:'pages/ware/admin/list.html',
 			controller:'WareCtrl'
+		}).when('/ware/detail/:id',{
+			templateUrl:'pages/ware/detail.html',
+			controller:'WaredetailCtrl'
 		}).otherwise({
 			redirectTo:'/'
 		})
@@ -74,6 +77,15 @@
 		}).error(function(data){
 			$location.path('/users/login');
 		});
+
+		//show goods
+		$http({
+			url:'/wares/list',
+			method:'GET'
+		}).success(function(wares){
+			$rootScope.wares =wares;
+		});
+
 
 	});
 
@@ -108,7 +120,7 @@
 				data:$scope.user
 			}).success(function(user){
 				$rootScope.me = user;
-				console.log($rootScope.me);
+				//console.log($rootScope.me);
 				$location.path('/home');
 			}).error(function(data){
 				//$location.path('/users/login');
@@ -178,6 +190,20 @@
 				$scope.wares.push(ware);
 			});
 		}
+	})
+
+	app.controller('WaredetailCtrl',function($rootScope,$scope,$location,$http,$routeParams){
+		
+		$scope.id=$routeParams.id;
+		console.log($scope.id);
+		$http({
+			url:'/wares/detail',
+			method:'POST',
+			data:{id:$scope.id}
+		}).success(function(wares){
+			$scope.wares =wares;
+		});
+
 	})
 
 	app.directive('addWares',function(){

@@ -41,4 +41,17 @@ router.get('/list',function(req,res){
     });
 });
 
+router.post('/detail',function(req,res){
+    var id=req.body.id;
+
+    Ware.findOne({_id:id},function(err,wares){
+        if (err) {
+            res.status(500).json({msg: err});
+        } else {
+            res.json(wares);
+        }
+    });
+
+});
+
 module.exports = router;
